@@ -25,7 +25,7 @@ class Vehicle extends Factory
 
 add_action('init', function() {
 
-	$vehicle = new Vehicle();
+	$vehicle = Vehicle::createInstance();
 
 	echo $vehicle->name();
 
