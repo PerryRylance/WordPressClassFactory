@@ -7,7 +7,7 @@
 	"minimum-stability": "stable",
     "autoload": {
         "psr-4": {
-            "PerryRylance\\WordpressClassFactory\\": "includes/"
+            "PerryRylance\\WordPress\\": "includes/"
         }
     },
     "authors": [
