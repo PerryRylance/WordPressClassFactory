@@ -4,11 +4,13 @@ namespace PerryRylance\WordPress;
 
 trait Factory
 {
+	const FILTER_PREFIX = "factory_create_instance_of_";
+
 	public static function createInstance()
 	{
 		$class = get_called_class();
 		$args = func_get_args();
-		$filter = "factory_create_instance_of_$class";
+		$filter = static::FILTER_PREFIX . $class;
 
 		// TODO: If the created object is a descendant of CRUD 
 		if(empty($args))
@@ -22,7 +24,7 @@ trait Factory
 		if(count($args) && $args[0] === $override)
 			$override = null;
 		
-		if(self::isUsingFactoryTrait($override))
+		if(!is_null($override) && static::isUsingFactoryTrait($override))
 			return $override;
 		
 		$reflect = new \ReflectionClass($class);
@@ -31,11 +33,16 @@ trait Factory
 		return $instance;
 	}
 
-	private static function isUsingFactoryTrait(string $class): bool
+	private static function isUsingFactoryTrait(object | string $class): bool
 	{
 		return in_array(
-			self::class, 
+			"PerryRylance\\WordPress\\Factory" ,
 			array_keys((new \ReflectionClass($class))->getTraits())
 		);
+	}
+
+	public static function override(string $class, callable $create, int $priority = 10, int $accepted_args = 0)
+	{
+		add_filter(static::FILTER_PREFIX . $class, $create, $priority, $accepted_args);
 	}
 }
