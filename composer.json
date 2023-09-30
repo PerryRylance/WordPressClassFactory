@@ -3,6 +3,8 @@
     "description": "A small class implemeting the factory method using WordPress' filter system, designed for making WordPress classes extensible.",
     "type": "library",
     "license": "MIT",
+	"version": "1.0.0",
+	"minimum-stability": "stable",
     "autoload": {
         "psr-4": {
             "PerryRylance\\WordpressClassFactory\\": "includes/"
