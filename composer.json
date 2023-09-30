@@ -1,0 +1,17 @@
+{
+    "name": "perry-rylance/wordpress-class-factory",
+    "description": "A small class implemeting the factory method using WordPress' filter system, designed for making WordPress classes extensible.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "PerryRylance\\WordpressClassFactory\\": "includes/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Perry Rylance",
+            "email": "contact@perryrylance.com"
+        }
+    ]
+}
