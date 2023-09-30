@@ -44,7 +44,7 @@ class Camper extends Vehicle
 	}
 }
 
-add_filter("factory_create_instance_of_ExamplePlugin\\Vehicle", fn() => return new Camper());
+Vehicle::override(fn() => return new Camper());
 ```
 
 The above will output `"A wonderful camper"`.
