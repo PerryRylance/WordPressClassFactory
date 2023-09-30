@@ -24,7 +24,12 @@ trait Factory
 		if(count($args) && $args[0] === $override)
 			$override = null;
 		
-		if(!is_null($override) && static::isUsingFactoryTrait($override))
+		$isUsingFactoryTrait = in_array(
+			"PerryRylance\\WordPress\\Factory",
+			array_keys((new \ReflectionClass($class))->getTraits())
+		);
+
+		if(!is_null($override) && $isUsingFactoryTrait)
 			return $override;
 		
 		$reflect = new \ReflectionClass($class);
@@ -33,16 +38,8 @@ trait Factory
 		return $instance;
 	}
 
-	private static function isUsingFactoryTrait(object | string $class): bool
+	public static function override(callable $create, int $priority = 10, int $accepted_args = 0)
 	{
-		return in_array(
-			"PerryRylance\\WordPress\\Factory" ,
-			array_keys((new \ReflectionClass($class))->getTraits())
-		);
-	}
-
-	public static function override(string $class, callable $create, int $priority = 10, int $accepted_args = 0)
-	{
-		add_filter(static::FILTER_PREFIX . $class, $create, $priority, $accepted_args);
+		add_filter(static::FILTER_PREFIX . get_called_class(), $create, $priority, $accepted_args);
 	}
 }
