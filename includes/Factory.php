@@ -2,7 +2,7 @@
 
 namespace PerryRylance\WordPress;
 
-class Factory
+trait Factory
 {
 	public static function createInstance()
 	{
@@ -10,9 +10,6 @@ class Factory
 		$args = func_get_args();
 		$filter = "factory_create_instance_of_$class";
 
-		if($class == 'PerryRylance\\WordPress\\Factory')
-			throw new \Exception('Factory createInstance would return abstract Factory');
-		
 		// TODO: If the created object is a descendant of CRUD 
 		if(empty($args))
 			$filter_args = array($filter, null);
@@ -25,12 +22,20 @@ class Factory
 		if(count($args) && $args[0] === $override)
 			$override = null;
 		
-		if($override instanceof Factory)
+		if(self::isUsingFactoryTrait($override))
 			return $override;
 		
 		$reflect = new \ReflectionClass($class);
 		$instance = $reflect->newInstanceArgs($args);
 		
 		return $instance;
+	}
+
+	private static function isUsingFactoryTrait(string $class): bool
+	{
+		return in_array(
+			self::class, 
+			array_keys((new \ReflectionClass($class))->getTraits())
+		);
 	}
 }
